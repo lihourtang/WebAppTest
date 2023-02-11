@@ -16,6 +16,8 @@
         var NID = ""
         var DOB = ""
         var address =""
+        var product = ""
+        var phone = ""
  
         async function callOCR(){
             const formData = new FormData();
@@ -50,6 +52,8 @@
             document.getElementById("lname").value = lastName
             document.getElementById("id").value = NID
             document.getElementById("add").value = address
+            document.getElementById("phone").value = phone
+            document.getElementById("product").value = product
         }
 
         function showButton() {
@@ -58,6 +62,10 @@
                 x.style.display = "none";
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                product = urlParams.get('product')
+                phone = urlParams.get('phone')
                 callOCR()
             } else {
                 alert('PLEASE UPLOAD NATIONAL ID OR PASSPORT!')
@@ -128,7 +136,7 @@
 <body>
     <div>
         <div id="main">
-            <img style="margin-top: 5%;margin-left: 5%;width: calc(15vw + 15vh + 20vmin);"
+            <img style="margin-top: 5%;margin-left: 4.5%;width: calc(10vw + 10vh + 15vmin);"
             src="https://www.prudential.com.kh/export/sites/prudential-kh/km/.galleries/images/PCLA-logo.png" alt="Prudential Logo">
             <p style="margin-top: 2%;margin-left: 5%;font-size: calc(2.3vw + 2.3vh + 1vmin)">PRUeShop on Telegram</p>
             <p style="margin-top: -2%;margin-left: 5%; font-weight: 200; font-size: calc(1vw + 1vh + 0.2vmin)">By
@@ -149,7 +157,7 @@
         </div>
         <div class="loader" id="loaderSpin"></div>
         <div id="personalInfo" style="display: none;">
-            <img style="margin-top: 5%;margin-left: 5%;width: calc(15vw + 15vh + 20vmin);"
+            <img style="margin-top: 5%;margin-left: 4.5%;width: calc(10vw + 10vh + 15vmin);"
             src="https://www.prudential.com.kh/export/sites/prudential-kh/km/.galleries/images/PCLA-logo.png" alt="Prudential Logo">
             <p style="margin-top: 2%;margin-left: 5%;font-size: calc(2.3vw + 2.3vh + 1vmin)">PRUeShop on Telegram</p>
             <p style="margin-top: -2%;margin-left: 5%; font-weight: 200; font-size: calc(1vw + 1vh + 0.2vmin)">By
@@ -162,10 +170,14 @@
                 <input type="text" id="fname" name="fname" style="width: 65%;"><br><br>
                 <label for="lname">Last name:</label>
                 <input type="text" id="lname" name="lname"  style="width: 65%;"><br><br>
-                <label for="lname">Identification No:</label>
+                <label for="lname">Identi No:</label>
                 <input type="text" id="id" name="id"  style="width: 65%;"><br><br>
                 <label for="lname">Address:</label>
                 <input type="text" id="add" name="add"  style="width: 65%;"><br><br>
+                <label for="lname">Phone:</label>
+                <input type="text" id="phone" name="phone"  style="width: 65%;"><br><br>
+                <label for="lname">Product:</label>
+                <input type="text" id="product" name="product"  style="width: 65%;"><br><br>
             </form>
             
         </div>
