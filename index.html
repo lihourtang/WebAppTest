@@ -36,17 +36,17 @@
                 }
                 NID = data['NID'].split(' ')[0]
                 DOB = data['Code'][1].substring(0,6)
+                if (DOB.substring(0,2)>22){
+                    DOB = '19' + DOB.substring(0,2) + '/' + DOB.substring(2,4) + '/' + DOB.substring(4,6)
+                } else {
+                    DOB = '20' + DOB.substring(0,2) + '/' + DOB.substring(2,4) + '/' + DOB.substring(4,6)
+                }
                 address = data['Address1'] + ' ' + data['Address2']
                 console.log(data)
             
             })
             var y = document.getElementById("loaderSpin");
             y.style.display = "none";
-            console.log(firstName)
-            console.log(lastName)
-            console.log(NID)
-            console.log(DOB)
-            console.log(address)
             document.getElementById("personalInfo").style.display = "block"
             document.getElementById("fname").value = firstName
             document.getElementById("lname").value = lastName
@@ -67,6 +67,11 @@
                 const urlParams = new URLSearchParams(queryString);
                 product = urlParams.get('product')
                 phone = urlParams.get('phone')
+                if (phone.substring(0,3) == '855'){
+                    phone = '0' + phone.substring(3,phone.length)
+                } else {
+                    phone = '0' + phone
+                }
                 callOCR()
             } else {
                 alert('PLEASE UPLOAD NATIONAL ID OR PASSPORT!')
@@ -76,14 +81,14 @@
 
          function returnBackData() {
             const mainButton = window.Telegram.WebApp.MainButton;
-            mainButton.text = "Save Preferences";
+            mainButton.text = "Confirmed Purchasing";
             mainButton.enable();
             mainButton.show();
             // and make it send the "foods" object (as JSON string) back to the bot
             mainButton.onClick(function () {
                 window.Telegram.WebApp.sendData(JSON.stringify({ test: 'test' }));
+                mainButton.close();
             })
-            mainButton.close();
 
         }
 
@@ -241,7 +246,6 @@
                 <div class="form-group" style="margin-top: 1%;">
                   <label for="exampleInputEmail1" style="font-size: calc(0.7vw + 0.7vh + 0.7vmin)">First name</label>
                   <input type="email" class="form-control" id="fname" aria-describedby="emailHelp" placeholder="Enter first name" style="font-size: calc(0.7vw + 0.7vh + 0.7vmin)">
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your personal information with anyone else.</small>
                 </div>
                 <div class="form-group" style="margin-top: 1%;">
                     <label for="exampleInputEmail1" style="font-size: calc(0.7vw + 0.7vh + 0.7vmin)">Last name</label>
@@ -269,7 +273,7 @@
                 </div>
                 <br/>
                 <div class="form-check" style="margin-top: 1%;">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" style="font-size: calc(0.8vw + 0.8vh + 0.8vmin)">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1" style="font-size: calc(0.8vw + 0.8vh + 0.8vmin)" onclick="returnBackData()">
                   <label class="form-check-label" for="exampleCheck1" style="font-size: calc(0.8vw + 0.8vh + 0.8vmin); font-weight: bold;">I declare the information above is correct, and I have read, understood and agreed to terms and conditions of the product stated above.</label>
                 </div>
               </form>
