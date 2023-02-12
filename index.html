@@ -90,6 +90,9 @@
                 x.style.display = "none";
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
+                setTimeout(function () {
+                    console.log("Good Night!");
+                }, 3000);
                 await callOTP()
                 window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: '300077675' }));
                 mainButton.close();
@@ -100,17 +103,17 @@
         async function callOTP() {
             const data = { 'phone': phone_number, 'code': "ការស្នើបណ្ណសន្យារ៉ាប់រងរបស់លោកអ្នកលេខ 300077675 ទទួលបានជោគជ័យ។ សូមទាញយកកម្មវិធី Pulse ដើម្បីមើលបណ្ណសន្យារ៉ាប់រង បើអ្នកជាវតាមគេហទំព័រ/ម៉ាស៊ីន។" };
             await fetch("https://pcla-otp-service-hc6oexyfvq-as.a.run.app/OTP", {
-      // https://pclafbapi-zv2mvux4zq-as.a.run.app
-      method: "POST", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-      })
+                // https://pclafbapi-zv2mvux4zq-as.a.run.app
+                method: "POST", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                })
         }
 
         function loadFile(event) {
@@ -325,7 +328,6 @@
                         stated above.</label>
                 </div>
             </form>
-            <button onclick="callOTP()">inform</button>>
 
         </div>
 
