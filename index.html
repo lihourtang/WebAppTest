@@ -54,6 +54,7 @@
             document.getElementById("add").value = address
             document.getElementById("phone").value = phone
             document.getElementById("product").value = product
+            document.getElementById("birthdate").value = DOB
         }
 
         function showButton() {
@@ -191,8 +192,8 @@
         <div class="header">
             <img class="logo" style="width: calc(8vw + 8vh + 10vmin)" src="https://www.prudential.com.kh/export/sites/prudential-kh/km/.galleries/images/PCLA-logo.png" alt="Prudential Logo">
             <div class="header-right">
-              <a class="active" href="#home">EN</a>
-              <a href="#contact">KH</a>
+              <!-- <a class="active" href="#home">EN</a> -->
+              <a href="#contact">ENGLISH</a>
             </div>
           </div>
         <div id="main">
@@ -220,10 +221,8 @@
             <p style="margin-top: 1%;margin-left: 5%;font-size: calc(2.3vw + 2.3vh + 1vmin)">PRUeShop</p>
             <p style="margin-top: -3%;margin-left: 5%; font-weight: 200; font-size: calc(1vw + 1vh + 0.2vmin)">By
                 Prudential Cambodia Life Assurance PLC</p>
-            <br />
             <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin)">Your Personal Information:</p>
-            <br />
-            <form style="margin-left: 5%">
+            <!-- <form style="margin-left: 5%">
                 <label for="fname">First name:</label>
                 <input type="text" id="fname" name="fname" style="width: 65%;"><br><br>
                 <label for="lname">Last name:</label>
@@ -236,7 +235,46 @@
                 <input type="text" id="phone" name="phone"  style="width: 65%;"><br><br>
                 <label for="lname">Product:</label>
                 <input type="text" id="product" name="product"  style="width: 65%;"><br><br>
-            </form>
+            </form> -->
+
+            <form style="margin-left: 5%;margin-right: 15%;">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">First name</label>
+                  <input type="email" class="form-control" id="fname" aria-describedby="emailHelp" placeholder="Enter first name">
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your personal information with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Last name</label>
+                    <input type="email" class="form-control" id="lname" aria-describedby="emailHelp" placeholder="Enter last name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">National/Passport Number</label>
+                    <input type="email" class="form-control" id="id" aria-describedby="emailHelp" placeholder="Enter ID number">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Phone Number</label>
+                    <input type="email" class="form-control" id="phone" aria-describedby="emailHelp" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Date of Birth</label>
+                    <input type="email" class="form-control" id="birthdate" aria-describedby="emailHelp" placeholder="Enter date of birth">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Chosen Product</label>
+                    <input type="email" class="form-control" id="product" aria-describedby="emailHelp" placeholder="Enter chosen product">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <input type="email" class="form-control" id="add" aria-describedby="emailHelp" placeholder="Enter address">
+                </div>
+                <br/>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">I declare the information above is correct, and I have read, understood and agreed to terms and conditions of the product stated above.</label>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
             
         </div>
 
