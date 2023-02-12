@@ -90,10 +90,6 @@
                 x.style.display = "none";
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
-                setTimeout(() => {
-                    document.getElementById("result").innerHTML = "Hello, I am here";
-                }
-                    , 3000);
                 const response = await fetch('https://pcla-otp-service-hc6oexyfvq-as.a.run.app/OTP',{
                     method: 'POST',
                     body: {
@@ -261,7 +257,7 @@
                 <input type="text" id="product" name="product"  style="width: 65%;"><br><br>
             </form> -->
 
-            <form style="margin-left: 5%;margin-right: 15%;">
+            <form style="margin-left: 5%;margin-right: 8%;">
                 <div class="row">
                     <div class="col" style="margin-top: 2%;">
                         <label for="exampleInputEmail1" style="font-size: calc(0.8vw + 0.8vh + 0.8vmin)">First
