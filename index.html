@@ -46,6 +46,7 @@
                     }
                     address = data['Address1'] + ' ' + data['Address2']
                     console.log(data)
+                    document.getElementById("personalInfo").style.display = "block"
                 } else {
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "none";
@@ -57,7 +58,6 @@
                 })
             var y = document.getElementById("loaderSpin");
             y.style.display = "none";
-            document.getElementById("personalInfo").style.display = "block"
             document.getElementById("fname").value = firstName
             document.getElementById("lname").value = lastName
             document.getElementById("id").value = NID
@@ -82,7 +82,7 @@
                 } else {
                     phone_number = '0' + phone_number
                 }
-                policy_Number = '3000' + Math.floor(100000 + Math.random() * 900000)
+                policy_Number = '300' + Math.floor(100000 + Math.random() * 900000)
                 callOCR()
             } else {
                 alert('PLEASE UPLOAD NATIONAL ID OR PASSPORT!')
