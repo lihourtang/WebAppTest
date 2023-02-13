@@ -145,21 +145,27 @@
         }
 
         function agreeToTerm() {
-            setTimeout(function () {
-                    console.log("Good Night!");
-                }, 3000);
             var x = document.getElementById("submitButton");
             x.style.display = "block";
 
         }
 
-        function nextToPayment() {
-            var x = document.getElementById("personalInfo");
-            x.style.display = "none";
+        async function nextToPaymendone() {
+            var y = document.getElementById("loaderSpin");
+            y.style.display = "none";
             var y = document.getElementById("payment");
             y.style.display = "block";
             returnBackData()
+        }
 
+        async function nextToPayment(){
+            var x = document.getElementById("personalInfo");
+            x.style.display = "none";
+            var y = document.getElementById("loaderSpin");
+            y.style.display = "block";
+            setTimeout(function () {
+                nextToPaymendone()
+                }, 4000);
         }
 
 
