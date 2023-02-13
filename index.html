@@ -28,6 +28,8 @@
                     headers: { 'APIAuthKey': 'pclasecretapikey' },
                     body: formData
                 }).then(r => r.json()).then(data => {
+                    if (data['Type']== 'NID'){
+
                     firstName = data['Code'][2].split("<")[0].replace("<", "")
                     if (data['Code'][2].split("<")[1].replace("<", "") != "") {
                         lastName = data['Code'][2].split("<")[1].replace("<", "")
@@ -43,6 +45,13 @@
                     }
                     address = data['Address1'] + ' ' + data['Address2']
                     console.log(data)
+                } else {
+                var y = document.getElementById("loaderSpin");
+                y.style.display = "none";
+                var x = document.getElementById("main");
+                x.style.display = "block";
+                alert('PlEASE UPLOAD A VALID NATIONAL ID!')
+                }
 
                 })
             var y = document.getElementById("loaderSpin");
@@ -319,7 +328,7 @@
                         placeholder="Enter address" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                 </div>
                 <br />
-                <div class="form-check" style="margin-top: 2%;">
+                <div class="form-check" style="margin-top: 4%;">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1"
                         style="font-size: calc(1vw + 1vh + 1vmin)" onclick="returnBackData()">
                     <label class="form-check-label" for="exampleCheck1"
