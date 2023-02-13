@@ -19,6 +19,7 @@
         var product = ""
         var phone_number = ""
         var policy_Number = ""
+        var gender = ""
 
         async function callOCR() {
             const formData = new FormData();
@@ -92,12 +93,12 @@
 
         async function returnBackData() {
             const mainButton = window.Telegram.WebApp.MainButton;
-            mainButton.text = "Confirm Purchase";
+            mainButton.text = "Confirm Payment";
             mainButton.enable();
             mainButton.show();
             // and make it send the "foods" object (as JSON string) back to the bot
             mainButton.onClick(async function () {
-                var x = document.getElementById("personalInfo");
+                var x = document.getElementById("payment");
                 x.style.display = "none";
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
@@ -141,6 +142,21 @@
             } else {
                 x.style.display = "none";
             }
+        }
+
+        function agreeToTerm() {
+            var x = document.getElementById("submitButton");
+            x.style.display = "block";
+
+        }
+
+        function nextToPayment() {
+            var x = document.getElementById("personalInfo");
+            x.style.display = "none";
+            var y = document.getElementById("payment");
+            y.style.display = "block";
+            returnBackData()
+
         }
 
 
@@ -284,62 +300,74 @@
             <form style="margin-left: 5%;margin-right: 8%;">
                 <div class="row">
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleInputEmail1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">First
+                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">First
                             name</label>
-                        <input type="email" class="form-control" id="fname" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="fname"
                             placeholder="Enter first name" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleInputEmail1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Last
+                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Last
                             name</label>
-                        <input type="email" class="form-control" id="lname" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="lname"
                             placeholder="Enter last name" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleInputEmail1"
+                        <label for="exampleFormControlTextarea1"
                             style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">National/Passport Number</label>
-                        <input type="email" class="form-control" id="id" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="id"
                             placeholder="Enter ID number" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleInputEmail1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Phone
+                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Phone
                             Number</label>
-                        <input type="email" class="form-control" id="phone" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="phone" 
                             placeholder="Enter phone number" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleInputEmail1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Date of
+                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Date of
                             Birth</label>
-                        <input type="email" class="form-control" id="birthdate" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="birthdate"
                             placeholder="Enter date of birth" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleInputEmail1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Chosen
+                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Chosen
                             Product</label>
-                        <input type="email" class="form-control" id="product" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="product"
                             placeholder="Enter chosen product" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                 </div>
                 <div class="form-group" style="margin-top: 2%;">
-                    <label for="exampleInputEmail1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Address</label>
-                    <input type="email" class="form-control" id="add" aria-describedby="emailHelp"
+                    <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Address</label>
+                    <input type="text" class="form-control" id="add"
                         placeholder="Enter address" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                 </div>
                 <br />
                 <div class="form-check" style="margin-top: 4%;">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1"
-                        style="font-size: calc(1vw + 1vh + 1vmin)" onclick="returnBackData()">
+                    <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                        style="font-size: calc(1vw + 1vh + 1vmin)" onclick="returnBackData()"> -->
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                        style="font-size: calc(1vw + 1vh + 1vmin)" onclick="agreeToTerm()">
                     <label class="form-check-label" for="exampleCheck1"
                         style="font-size: calc(1vw + 1vh + 1vmin); font-weight: bold;">I declare the information
                         above is correct, and I have read, understood and agreed to terms and conditions of the product
                         stated above.</label>
                 </div>
+                <div style="margin-top: 4%; display: none;" id="submitButton">
+                    <button type="button" class="btn btn-danger" style="width: 20%;" onclick="nextToPayment()">Next</button>
+                </div>
             </form>
 
+        </div>
+        <div id="payment" style="display: none;">
+            <p style="margin-top: 3%;margin-left: 5%;font-size: calc(2vw + 2vh + 0.7vmin);text-align: center;">Scan QR Code with ABA Mobile app</p>
+            <br/>
+            <div style='margin: auto;display: flex;justify-content: center;'>
+                <img src="https://i.ibb.co/5nSC88P/IMG-7199.jpg" style="width: 35%;">
+              </div>
         </div>
 
     </div>
