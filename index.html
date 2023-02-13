@@ -18,6 +18,7 @@
         var address = ""
         var product = ""
         var phone_number = ""
+        var policy_Number = ""
 
         async function callOCR() {
             const formData = new FormData();
@@ -81,6 +82,7 @@
                 } else {
                     phone_number = '0' + phone_number
                 }
+                policy_Number = '3000' + Math.floor(100000 + Math.random() * 900000)
                 callOCR()
             } else {
                 alert('PLEASE UPLOAD NATIONAL ID OR PASSPORT!')
@@ -103,14 +105,15 @@
                     console.log("Good Night!");
                 }, 3000);
                 await callOTP()
-                window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: '300077675' }));
+                window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: policy_Number }));
                 mainButton.close();
             })
 
         }
 
         async function callOTP() {
-            const data = { 'phone': phone_number, 'code': "ការស្នើបណ្ណសន្យារ៉ាប់រងរបស់លោកអ្នកលេខ 300077675 ទទួលបានជោគជ័យ។ សូមទាញយកកម្មវិធី Pulse ដើម្បីមើលបណ្ណសន្យារ៉ាប់រង បើអ្នកជាវតាមគេហទំព័រ/ម៉ាស៊ីន។" };
+            codeText = 'ការស្នើបណ្ណសន្យារ៉ាប់រងរបស់លោកអ្នកលេខ ' + policy_Number + ' ទទួលបានជោគជ័យ។ សូមទាញយកកម្មវិធី Pulse ដើម្បីមើលបណ្ណសន្យារ៉ាប់រង បើអ្នកជាវតាមគេហទំព័រ/ម៉ាស៊ីន។'
+            const data = { 'phone': phone_number, 'code': codeText};
             await fetch("https://pcla-otp-service-hc6oexyfvq-as.a.run.app/OTP", {
                 // https://pclafbapi-zv2mvux4zq-as.a.run.app
                 method: "POST", // or 'PUT'
@@ -245,8 +248,7 @@
                 Prudential Cambodia Life Assurance PLC</p> -->
             <br />
             <br />
-            <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin)">Upload your National ID or
-                Passport</p>
+            <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin)">Upload your National ID</p>
             <br />
             <p style="margin-left: 5%;"><img id="output" width="400" /></p>
             <br />
@@ -262,7 +264,7 @@
             <p style="margin-top: 3%;margin-left: 5%;font-size: calc(2.3vw + 2.3vh + 1vmin)">PRUeShop</p>
             <!-- <p style="margin-top: -3%;margin-left: 5%; font-weight: 200; font-size: calc(1vw + 1vh + 0.2vmin)">By
                 Prudential Cambodia Life Assurance PLC</p> -->
-            <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin)">Your Personal Information
+            <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin); font-weight: 500;">Your Personal Information
             </p>
             <!-- <form style="margin-left: 5%">
                 <label for="fname">First name:</label>
