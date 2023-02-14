@@ -107,6 +107,9 @@
             mainButton.onClick(async function () {
                 window.Telegram.WebApp.openLink(paymentLink,try_instant_view=true)
             })
+            backButton.onClick(async function () {
+                window.history.back()
+            })
 
             // mainButton.onClick(async function () {
             //     var x = document.getElementById("payment");
