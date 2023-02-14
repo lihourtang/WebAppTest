@@ -106,6 +106,7 @@
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
                 callLink = 'https://4867-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
+                console.log(callLink)
                 await fetch(callLink, {
                     method: 'GET',
                 }).then((response) => response.json())
