@@ -105,7 +105,7 @@
             backButton.text = 'Going Back'
             backButton.show()
             mainButton.onClick(async function () {
-                window.Telegram.WebApp.openLink(paymentLink)
+                window.Telegram.WebApp.openLink(paymentLink,try_instant_view=true)
             })
 
             // mainButton.onClick(async function () {
