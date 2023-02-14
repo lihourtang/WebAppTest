@@ -20,6 +20,9 @@
         var phone_number = ""
         var policy_Number = ""
         var gender = ""
+        var paymentLink = ""
+        var uniquePaymentID = ""
+        var amountReceived = ''
 
         async function callOCR() {
             const formData = new FormData();
@@ -30,31 +33,31 @@
                     headers: { 'APIAuthKey': 'pclasecretapikey' },
                     body: formData
                 }).then(r => r.json()).then(data => {
-                    if (data['Type']== 'NID'){
+                    if (data['Type'] == 'NID') {
 
-                    firstName = data['Code'][2].split("<")[0].replace("<", "")
-                    if (data['Code'][2].split("<")[1].replace("<", "") != "") {
-                        lastName = data['Code'][2].split("<")[1].replace("<", "")
+                        firstName = data['Code'][2].split("<")[0].replace("<", "")
+                        if (data['Code'][2].split("<")[1].replace("<", "") != "") {
+                            lastName = data['Code'][2].split("<")[1].replace("<", "")
+                        } else {
+                            lastName = data['Code'][2].split("<")[2].replace("<", "")
+                        }
+                        NID = data['NID'].split(' ')[0]
+                        DOB = data['Code'][1].substring(0, 6)
+                        if (DOB.substring(0, 2) > 22) {
+                            DOB = '19' + DOB.substring(0, 2) + '/' + DOB.substring(2, 4) + '/' + DOB.substring(4, 6)
+                        } else {
+                            DOB = '20' + DOB.substring(0, 2) + '/' + DOB.substring(2, 4) + '/' + DOB.substring(4, 6)
+                        }
+                        address = data['Address1'] + ' ' + data['Address2']
+                        console.log(data)
+                        document.getElementById("personalInfo").style.display = "block"
                     } else {
-                        lastName = data['Code'][2].split("<")[2].replace("<", "")
+                        var y = document.getElementById("loaderSpin");
+                        y.style.display = "none";
+                        var x = document.getElementById("main");
+                        x.style.display = "block";
+                        alert('PlEASE UPLOAD A VALID NATIONAL ID!')
                     }
-                    NID = data['NID'].split(' ')[0]
-                    DOB = data['Code'][1].substring(0, 6)
-                    if (DOB.substring(0, 2) > 22) {
-                        DOB = '19' + DOB.substring(0, 2) + '/' + DOB.substring(2, 4) + '/' + DOB.substring(4, 6)
-                    } else {
-                        DOB = '20' + DOB.substring(0, 2) + '/' + DOB.substring(2, 4) + '/' + DOB.substring(4, 6)
-                    }
-                    address = data['Address1'] + ' ' + data['Address2']
-                    console.log(data)
-                    document.getElementById("personalInfo").style.display = "block"
-                } else {
-                var y = document.getElementById("loaderSpin");
-                y.style.display = "none";
-                var x = document.getElementById("main");
-                x.style.display = "block";
-                alert('PlEASE UPLOAD A VALID NATIONAL ID!')
-                }
 
                 })
             var y = document.getElementById("loaderSpin");
@@ -102,19 +105,32 @@
                 x.style.display = "none";
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
-                setTimeout(function () {
-                    console.log("Good Night!");
-                }, 3000);
-                await callOTP()
-                window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: policy_Number }));
-                mainButton.close();
+                callLink = 'https://4867-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
+                await fetch(callLink, {
+                    method: 'GET',
+                }).then((response) => response.json())
+                    .then((data) => {
+                        console.log(data)
+                        amountReceived = data['amountReceived']
+                    })
+                if (amountReceived > 0) {
+                    await callOTP()
+                    window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: policy_Number }));
+                    mainButton.close();
+                } else {
+                    alert('Please make sure you pay the premium!')
+                    var y = document.getElementById("loaderSpin");
+                    y.style.display = "done";
+                    var x = document.getElementById("payment");
+                    x.style.display = "block";
+                }
             })
 
         }
 
         async function callOTP() {
             codeText = 'ការស្នើបណ្ណសន្យារ៉ាប់រងរបស់លោកអ្នកលេខ ' + policy_Number + ' ទទួលបានជោគជ័យ។ សូមទាញយកកម្មវិធី Pulse ដើម្បីមើលបណ្ណសន្យារ៉ាប់រង បើអ្នកជាវតាមគេហទំព័រ/ម៉ាស៊ីន។'
-            const data = { 'phone': phone_number, 'code': codeText};
+            const data = { 'phone': phone_number, 'code': codeText };
             await fetch("https://pcla-otp-service-hc6oexyfvq-as.a.run.app/OTP", {
                 // https://pclafbapi-zv2mvux4zq-as.a.run.app
                 method: "POST", // or 'PUT'
@@ -158,14 +174,28 @@
             returnBackData()
         }
 
-        async function nextToPayment(){
+        async function nextToPayment() {
             var x = document.getElementById("personalInfo");
             x.style.display = "none";
             var y = document.getElementById("loaderSpin");
             y.style.display = "block";
-            setTimeout(function () {
-                nextToPaymendone()
-                }, 4000);
+            await fetch("https://4867-96-9-67-90.ap.ngrok.io/generateQR", {
+                method: 'GET',
+            }).then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    paymentLink = data['paymentLink']
+                    uniquePaymentID = data['paymentId']
+                })
+            document.getElementById("link2").setAttribute("href", paymentLink);
+            nextToPaymendone()
+            // var x = document.getElementById("personalInfo");
+            // x.style.display = "none";
+            // var y = document.getElementById("loaderSpin");
+            // y.style.display = "block";
+            // setTimeout(function () {
+            //     nextToPaymendone()
+            //     }, 4000);
         }
 
 
@@ -289,7 +319,8 @@
             <p style="margin-top: 3%;margin-left: 5%;font-size: calc(2.3vw + 2.3vh + 1vmin)">PRUeShop</p>
             <!-- <p style="margin-top: -3%;margin-left: 5%; font-weight: 200; font-size: calc(1vw + 1vh + 0.2vmin)">By
                 Prudential Cambodia Life Assurance PLC</p> -->
-            <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin); font-weight: 500;">Your Personal Information
+            <p style="margin-left: 5%; font-weight: 200;font-size: calc(1vw + 1vh + 1vmin); font-weight: 500;">Your
+                Personal Information
             </p>
             <!-- <form style="margin-left: 5%">
                 <label for="fname">First name:</label>
@@ -311,54 +342,56 @@
                     <div class="col" style="margin-top: 2%;">
                         <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">First
                             name</label>
-                        <input type="text" class="form-control" id="fname"
-                            placeholder="Enter first name" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                        <input type="text" class="form-control" id="fname" placeholder="Enter first name"
+                            style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                     <div class="col" style="margin-top: 2%;">
                         <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Last
                             name</label>
-                        <input type="text" class="form-control" id="lname"
-                            placeholder="Enter last name" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                        <input type="text" class="form-control" id="lname" placeholder="Enter last name"
+                            style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" style="margin-top: 2%;">
                         <label for="exampleFormControlTextarea1"
                             style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">National/Passport Number</label>
-                        <input type="text" class="form-control" id="id"
-                            placeholder="Enter ID number" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                        <input type="text" class="form-control" id="id" placeholder="Enter ID number"
+                            style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                     <div class="col" style="margin-top: 2%;">
                         <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Phone
                             Number</label>
-                        <input type="text" class="form-control" id="phone" 
-                            placeholder="Enter phone number" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                        <input type="text" class="form-control" id="phone" placeholder="Enter phone number"
+                            style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" style="margin-top: 2%;">
-                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Date of
+                        <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Date
+                            of
                             Birth</label>
-                        <input type="text" class="form-control" id="birthdate"
-                            placeholder="Enter date of birth" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                        <input type="text" class="form-control" id="birthdate" placeholder="Enter date of birth"
+                            style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                     <div class="col" style="margin-top: 2%;">
                         <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Chosen
                             Product</label>
-                        <input type="text" class="form-control" id="product"
-                            placeholder="Enter chosen product" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                        <input type="text" class="form-control" id="product" placeholder="Enter chosen product"
+                            style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                     </div>
                 </div>
                 <div class="form-group" style="margin-top: 2%;">
-                    <label for="exampleFormControlTextarea1" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Address</label>
-                    <input type="text" class="form-control" id="add"
-                        placeholder="Enter address" style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
+                    <label for="exampleFormControlTextarea1"
+                        style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">Address</label>
+                    <input type="text" class="form-control" id="add" placeholder="Enter address"
+                        style="font-size: calc(0.9vw + 0.9vh + 0.9vmin)">
                 </div>
                 <br />
                 <div class="form-check" style="margin-top: 4%;">
                     <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"
                         style="font-size: calc(1vw + 1vh + 1vmin)" onclick="returnBackData()"> -->
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1"
                         style="font-size: calc(1vw + 1vh + 1vmin)" onclick="agreeToTerm()">
                     <label class="form-check-label" for="exampleCheck1"
                         style="font-size: calc(1vw + 1vh + 1vmin); font-weight: bold;">I declare the information
@@ -366,25 +399,28 @@
                         stated above.</label>
                 </div>
                 <div style="margin-top: 4%; display: none;" id="submitButton">
-                    <button type="button" class="btn btn-danger" style="font-size:calc(1.5vw + 1.5vh + 0.8vmin); width: 60%;" onclick="nextToPayment()">Next</button>
+                    <button type="button" class="btn btn-danger"
+                        style="font-size:calc(1.5vw + 1.5vh + 0.8vmin); width: 60%;"
+                        onclick="nextToPayment()">Next</button>
                 </div>
             </form>
 
         </div>
         <div id="payment" style="display: none;">
-            <p style="margin-top: 5%;margin-left: 5%;margin-right: 5%;font-size: calc(2vw + 2vh + 0.5vmin);text-align: center;">Scan QR Code with ABA Mobile app</p>
-            <br/>
-            <div style='margin: auto;display: flex;justify-content: center;'>
-                <!-- <img src="https://i.ibb.co/5nSC88P/IMG-7199.jpg" style="width: 75%;"> -->
+            <p
+                style="margin-top: 5%;margin-left: 5%;margin-right: 5%;font-size: calc(2vw + 2vh + 0.5vmin);text-align: center;">
+                Scan QR Code with ABA Mobile app</p>
+            <br />
+            <!-- <div style='margin: auto;display: flex;justify-content: center;'>
                 <img src="https://i.ibb.co/vmfwJ85/2023-02-14-10-22-02.jpg" style="width: 65%;">
-              </div>
-              <div style='margin: auto;display: flex;justify-content: center;margin-top: 1.5%;'>
-              <br/>
-              <h2>OR</h2>
+              </div> -->
+            <div style='margin: auto;display: flex;justify-content: center;margin-top: 1.5%;'>
+                <br />
+                <h2>Choose Your Payment Method:</h2>
             </div>
-            <div style='margin: auto;display: flex;justify-content: center;'>
-                <br/>
-                <a href="https://link.payway.com.kh/ABAPAYY260686f" style="font-size: calc(2vw + 2vh + 0.5vmin)">Click here</a>
+            <div style='margin: auto;display: flex;justify-content: center;margin-top: 5%;'>
+                <br />
+                <a id='link2' style="font-size: calc(2vw + 2vh + 0.5vmin)">ABA Pay or KHQR</a>
             </div>
         </div>
 
