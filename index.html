@@ -102,35 +102,38 @@
             mainButton.text = "Confirm Payment";
             mainButton.enable();
             mainButton.show();
-            backButton.text = 'back'
+            backButton.text = 'Going Back'
             backButton.show()
-            // and make it send the "foods" object (as JSON string) back to the bot
             mainButton.onClick(async function () {
-                var x = document.getElementById("payment");
-                x.style.display = "none";
-                var y = document.getElementById("loaderSpin");
-                y.style.display = "block";
-                callLink = 'https://4867-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
-                console.log(callLink)
-                await fetch(callLink, {
-                    method: 'GET',
-                }).then((response) => response.json())
-                    .then((data) => {
-                        console.log(data)
-                        amountReceived = data['amountReceived']
-                    })
-                if (amountReceived > 0) {
-                    await callOTP()
-                    window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: policy_Number }));
-                    mainButton.close();
-                } else {
-                    alert('Please make sure you pay the premium!')
-                    var y = document.getElementById("loaderSpin");
-                    y.style.display = "done";
-                    var x = document.getElementById("payment");
-                    x.style.display = "block";
-                }
+                window.Telegram.WebApp.openLink(paymentLink)
             })
+
+            // mainButton.onClick(async function () {
+            //     var x = document.getElementById("payment");
+            //     x.style.display = "none";
+            //     var y = document.getElementById("loaderSpin");
+            //     y.style.display = "block";
+            //     callLink = 'https://4867-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
+            //     console.log(callLink)
+            //     await fetch(callLink, {
+            //         method: 'GET',
+            //     }).then((response) => response.json())
+            //         .then((data) => {
+            //             console.log(data)
+            //             amountReceived = data['amountReceived']
+            //         })
+            //     if (amountReceived > 0) {
+            //         await callOTP()
+            //         window.Telegram.WebApp.sendData(JSON.stringify({ policynumber: policy_Number }));
+            //         mainButton.close();
+            //     } else {
+            //         alert('Please make sure you pay the premium!')
+            //         var y = document.getElementById("loaderSpin");
+            //         y.style.display = "done";
+            //         var x = document.getElementById("payment");
+            //         x.style.display = "block";
+            //     }
+            // })
 
         }
 
@@ -315,7 +318,6 @@
             </div>
         </div>
         <div id="main">
-            <iframe is="x-frame-bypass" src="https://link.payway.com.kh/Ta60903C"></iframe>
             <!-- <img style="margin-top: 5%;margin-left: 4.5%;width: calc(10vw + 10vh + 15vmin);"
             src="https://www.prudential.com.kh/export/sites/prudential-kh/km/.galleries/images/PCLA-logo.png" alt="Prudential Logo"> -->
             <p style="margin-top: 3%;margin-left: 5%;font-size: calc(2.3vw + 2.3vh + 1vmin)">PRUeShop</p>
