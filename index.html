@@ -105,7 +105,7 @@
             backButton.text = 'Going Back'
             backButton.show()
             mainButton.onClick(async function () {
-                window.Telegram.WebApp.openLink(paymentLink,try_instant_view=true)
+                window.Telegram.WebApp.openLink(paymentLink, try_instant_view = true)
                 //window.Telegram.WebApp.openInvoice(paymentLink)
             })
 
@@ -170,11 +170,41 @@
             }
         }
 
-        function agreeToTerm() {
-            var x = document.getElementById("submitButton");
-            x.style.display = "block";
+        // function agreeToTerm() {
+        //     var x = document.getElementById("submitButton");
+        //     x.style.display = "block";
 
-        }
+        // }
+
+        async function agreeToTerm() {
+            const mainButton = window.Telegram.WebApp.MainButton;
+            //const backButton = window.Telegram.WebApp.BackButton;
+            mainButton.text = "Submit Propsal";
+            mainButton.enable();
+            mainButton.show();
+            //backButton.text = 'Going Back'
+            //backButton.show()
+            mainButton.onClick(async function () {
+                mainButton.hide()
+                var x = document.getElementById("personalInfo");
+                x.style.display = "none";
+                var y = document.getElementById("loaderSpin");
+                y.style.display = "block";
+                await fetch("https://4b81-96-9-67-90.ap.ngrok.io/generateQR", {
+                    method: 'GET',
+                }).then((response) => response.json())
+                    .then((data) => {
+                        console.log(data)
+                        paymentLink = data['paymentLink']
+                        uniquePaymentID = data['paymentId']
+                    })
+                window.Telegram.WebApp.sendData(JSON.stringify({ uPaymentID: uniquePaymentID,
+                    uPaymentLink: paymentLink}))
+                    mainButton.close()
+
+                })
+            }
+        
 
         async function nextToPaymendone() {
             var y = document.getElementById("loaderSpin");
@@ -185,23 +215,23 @@
         }
 
         async function authenticate() {
-                callLink = 'https://4867-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
-                console.log(callLink)
-                await fetch(callLink, {
-                    method: 'GET',
-                }).then((response) => response.json())
-                    .then((data) => {
-                        console.log(data)
-                        amountReceived = data['amountReceived']
-                    })
-            }
+            callLink = 'https://4b81-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
+            console.log(callLink)
+            await fetch(callLink, {
+                method: 'GET',
+            }).then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    amountReceived = data['amountReceived']
+                })
+        }
 
         async function nextToPayment() {
             var x = document.getElementById("personalInfo");
             x.style.display = "none";
             var y = document.getElementById("loaderSpin");
             y.style.display = "block";
-            await fetch("https://4867-96-9-67-90.ap.ngrok.io/generateQR", {
+            await fetch("https://4b81-96-9-67-90.ap.ngrok.io/generateQR", {
                 method: 'GET',
             }).then((response) => response.json())
                 .then((data) => {
@@ -443,7 +473,7 @@
             </div>
             <div style='margin: auto;display: flex;justify-content: center;margin-top: 5%;'>
                 <br />
-                <a  id='paymentgateway' style="font-size: calc(2vw + 2vh + 0.5vmin)" >ABA Pay or KHQR</a>
+                <a id='paymentgateway' style="font-size: calc(2vw + 2vh + 0.5vmin)">ABA Pay or KHQR</a>
             </div>
         </div>
 
