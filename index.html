@@ -190,7 +190,7 @@
                 x.style.display = "none";
                 var y = document.getElementById("loaderSpin");
                 y.style.display = "block";
-                await fetch("https://4b81-96-9-67-90.ap.ngrok.io/generateQR", {
+                await fetch("https://pcla-payway-hc6oexyfvq-as.a.run.app/generateQR", {
                     method: 'GET',
                 }).then((response) => response.json())
                     .then((data) => {
@@ -215,7 +215,7 @@
         }
 
         async function authenticate() {
-            callLink = 'https://4b81-96-9-67-90.ap.ngrok.io/authenticatePayment?id=' + uniquePaymentID
+            callLink = 'https://pcla-payway-hc6oexyfvq-as.a.run.app/authenticatePayment?id=' + uniquePaymentID
             console.log(callLink)
             await fetch(callLink, {
                 method: 'GET',
@@ -231,7 +231,7 @@
             x.style.display = "none";
             var y = document.getElementById("loaderSpin");
             y.style.display = "block";
-            await fetch("https://4b81-96-9-67-90.ap.ngrok.io/generateQR", {
+            await fetch("https://pcla-payway-hc6oexyfvq-as.a.run.app/generateQR", {
                 method: 'GET',
             }).then((response) => response.json())
                 .then((data) => {
